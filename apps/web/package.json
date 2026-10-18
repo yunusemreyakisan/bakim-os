@@ -1,0 +1,42 @@
+{
+  "name": "@bakimos/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start -p 3000 -H 0.0.0.0",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "jest --config jest.config.cjs --runInBand"
+  },
+  "dependencies": {
+    "@bakimos/api-contracts": "workspace:*",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "idb": "8.0.4",
+    "lucide-react": "1.59.0",
+    "next": "16.4.2",
+    "qrcode": "1.5.4",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "tailwind-merge": "3.7.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.4",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/jest": "30.0.0",
+    "@types/node": "22.20.5",
+    "@types/qrcode": "1.5.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.4",
+    "fake-indexeddb": "6.2.6",
+    "jest": "30.5.2",
+    "postcss": "8.5.30",
+    "tailwindcss": "4.3.3",
+    "ts-jest": "29.4.15",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.71.2"
+  }
+}

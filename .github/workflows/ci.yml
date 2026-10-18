@@ -1,0 +1,46 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: bakimos
+          POSTGRES_PASSWORD: bakimos
+          POSTGRES_DB: bakimos
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U bakimos -d bakimos"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://bakimos:bakimos@localhost:5432/bakimos
+      JWT_ACCESS_SECRET: ci-only-access-secret-32-characters-min
+      TENANT_BOOTSTRAP_TOKEN: ci-bootstrap-token-value
+      WEB_ORIGIN: http://localhost:3000
+      CORS_ORIGINS: http://localhost:3000
+      COOKIE_SECURE: 'false'
+      SEED_PASSWORD: CiOnly-Change-1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: cp .env.example .env
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:migrate
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test

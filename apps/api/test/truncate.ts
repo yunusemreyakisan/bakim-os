@@ -1,0 +1,2 @@
+export const TRUNCATE_SQL =
+  'TRUNCATE TABLE "attachments", "work_order_part_uses", "stock_movements", "stock_balances", "parts", "maintenance_check_items", "maintenance_tasks", "maintenance_plan_items", "maintenance_plans", "sync_operations", "work_order_activities", "work_orders", "tenant_sequences", "audit_logs", "faults", "equipment", "memberships", "refresh_tokens", "sites", "users", "tenants" RESTART IDENTITY CASCADE';

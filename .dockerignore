@@ -1,0 +1,10 @@
+node_modules
+**/node_modules
+dist
+.next
+coverage
+.tools
+.data
+.git
+*.log
+.env

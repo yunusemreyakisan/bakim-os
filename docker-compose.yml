@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: bakimos
+      POSTGRES_PASSWORD: bakimos
+      POSTGRES_DB: bakimos
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U bakimos -d bakimos']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    profiles: ['app']
+    build:
+      context: .
+      dockerfile: infra/docker/api.Dockerfile
+    environment:
+      NODE_ENV: development
+      API_PORT: 3001
+      DATABASE_URL: postgresql://bakimos:bakimos@postgres:5432/bakimos
+      WEB_ORIGIN: http://localhost:3000
+      CORS_ORIGINS: http://localhost:3000
+      COOKIE_SECURE: 'false'
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      TENANT_BOOTSTRAP_TOKEN: ${TENANT_BOOTSTRAP_TOKEN}
+      STORAGE_ROOT: /data/storage
+      SENTRY_DSN: ${SENTRY_DSN:-}
+    ports:
+      - '3001:3001'
+    volumes:
+      - storage:/data/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    profiles: ['app']
+    build:
+      context: .
+      dockerfile: infra/docker/web.Dockerfile
+    environment:
+      API_INTERNAL_URL: http://api:3001
+    ports:
+      - '3000:3000'
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
+  storage:

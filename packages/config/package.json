@@ -1,0 +1,10 @@
+{
+  "name": "@bakimos/config",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "lint": "node -e \"process.exit(0)\"",
+    "typecheck": "node -e \"process.exit(0)\"",
+    "build": "node -e \"process.exit(0)\""
+  }
+}
